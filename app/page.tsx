@@ -1,103 +1,172 @@
+"use client";
+import {
+  Instagram,
+  LockKeyhole,
+  MailOpen,
+  Mails,
+  Twitter,
+  User,
+  Youtube,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { gsap } from "gsap";
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isSignUp, setIsSignUp] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const router = useRouter();
+  useEffect(() => {
+    gsap.to(
+      [".register .header", ".register .registerP", ".register .button"],
+      {
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.3,
+      }
+    );
+
+    gsap.to(".register", {
+      duration: 1.5,
+      x: -900,
+      rotate: 180,
+      backgroundColor: "#008080",
+      ease: "power3.out",
+      onComplete: () => {
+        const elements = document.querySelectorAll(
+          ".register .header, .register .registerP, .register .button"
+        );
+        elements.forEach((el) => el.remove());
+
+        setIsSignUp(true);
+      },
+    });
+
+    gsap.to(".regBtn", {
+      duraation: 1.5,
+      backgroundColor: "#008080",
+      delay: 0.3,
+    })
+
+    gsap.to(".login", {
+      duration: 1.5,
+      x: 700,
+      delay: 0.1,
+      
+    });
+  }, []);
+
+  return (
+    <main className=" bg-[#F2F2F2] min-h-screen text-center text-black flex  ">
+      {/* LOGIN */}
+      <div className=" login px-56 flex flex-col justify-center">
+        <h1 className=" text-center text-4xl font-bold ">
+          {isSignUp ? "Registeration" : "Login Form"}
+        </h1>
+        <span className="flex gap-3 py-6 items-center justify-center ">
+          <Link
+            href=""
+            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <Mails size={18} />
+          </Link>
+          <Link
+            href=""
+            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
           >
-            Read our docs
-          </a>
+            <Instagram size={18} />
+          </Link>
+          <Link
+            href=""
+            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
+          >
+            <Twitter size={18} />
+          </Link>
+          <Link
+            href=""
+            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
+          >
+            <Youtube size={18} />
+          </Link>
+        </span>
+        <p className="text-sm text-gray-500 pb-3">
+          Welcome, we are happy to have you
+          {isSignUp ? <span> here.</span> : <span>back.</span>}
+        </p>
+        {/* inputs */}
+        <div className=" flex flex-col gap-3 ">
+          {/* Email */}
+          <div className="relative w-[310] max-w-full ">
+            <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
+              <MailOpen className="text-gray-600 mr-2" />
+              <input
+                type="text"
+                placeholder="Email"
+                required
+                className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-600"
+              />
+            </div>
+          </div>
+          {/* Username */}
+          <div className="relative w-[310] max-w-full ">
+            <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
+              <User className="text-gray-600 mr-2" />
+              <input
+                type="text"
+                placeholder="Username"
+                required
+                className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-600"
+              />
+            </div>
+          </div>
+          {/* password */}
+          <div className="relative w-[310] max-w-full ">
+            <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
+              <LockKeyhole className="text-gray-600 mr-2" />
+              <input
+                type="text"
+                placeholder="Password"
+                required
+                className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-600"
+              />
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        {!isSignUp && (
+          <Link href="" className="text-sm text-right  ">
+            Forgot password
+          </Link>
+        )}
+
+        <span className=" underline text-sm text-center py-4  ">
+          {isSignUp ? <span className="pt-4" >Already have an account?</span> : <span>Do not have an account?</span>}
+         
+          <Link href="" className="text-base text-blue-600">
+             {isSignUp ? <span>Log in</span> : <span>Sign in</span>}
+          </Link>
+        </span>
+        <Link href={""} className=" regBtn bg-[#40E0D0] text-center py-2 rounded-md ">
+        {isSignUp ? <span>SIGN IN</span> : <span>LOG IN</span>}
+        </Link>
+      </div>
+
+      {/* SIGN IN */}
+      <div className=" register bg-[#40E0D0] text-black flex-1 flex flex-col rounded-bl-[60%] rounded-tl-[60%] items-center justify-center ">
+        <h1 className=" header text-3xl font-extrabold">Come join us!</h1>
+        <p className=" registerP w-1/2 py-4 ">
+          We are so excited to have you here. If you haven't already, create an
+          account to get access to excusive deals and offers.
+        </p>
+        <Link
+          href={""}
+          className=" button bg-[#F2F2F2] w-40 text-center py-2 rounded-md "
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Sign Up
+        </Link>
+      </div>
+    </main>
   );
 }
