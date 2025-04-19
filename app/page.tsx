@@ -8,98 +8,95 @@ import {
   User,
   Youtube,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState(false);
-
   const router = useRouter();
-  useEffect(() => {
+
+  const handleFlip = () => {
+    // Hide current content
     gsap.to(
       [".register .header", ".register .registerP", ".register .button"],
       {
         opacity: 0,
-        duration: 0.5,
-        delay: 0.3,
+        duration: 0.3,
       }
     );
 
+    const direction = isSignUp ? 0 : 180;
+    const loginX = isSignUp ? 0 : 700;
+    const registerX = isSignUp ? 0 : -900;
+    const bgColor = isSignUp ? "#40E0D0" : "#008080";
+
     gsap.to(".register", {
       duration: 1.5,
-      x: -900,
-      rotate: 180,
-      backgroundColor: "#008080",
+      x: registerX,
+      rotate: direction,
+      backgroundColor: bgColor,
       ease: "power3.out",
       onComplete: () => {
-        const elements = document.querySelectorAll(
-          ".register .header, .register .registerP, .register .button"
-        );
-        elements.forEach((el) => el.remove());
+        setIsSignUp((prev) => !prev);
 
-        setIsSignUp(true);
+        const tl = gsap.timeline();
+        tl.set(
+          [".register .header", ".register .registerP", ".register .button"],
+          {
+            rotate: direction,
+          }
+        );
+
+        tl.to(".register .header", { opacity: 1, duration: 0.4 })
+          .to(".register .registerP", { opacity: 1, duration: 0.4 }, "+=0.1")
+          .to(".register .button", { opacity: 1, duration: 0.4 }, "+=0.1");
       },
     });
 
-    gsap.to(".regBtn", {
-      duraation: 1.5,
-      backgroundColor: "#008080",
-      delay: 0.3,
-    })
-
     gsap.to(".login", {
       duration: 1.5,
-      x: 700,
+      x: loginX,
       delay: 0.1,
-      
     });
-  }, []);
+
+    gsap.to(".regBtn", {
+      duration: 1.5,
+      backgroundColor: bgColor,
+      delay: 0.3,
+    });
+  };
 
   return (
-    <main className=" bg-[#F2F2F2] min-h-screen text-center text-black flex  ">
+    <main className="bg-[#F2F2F2] min-h-screen text-center text-black flex">
       {/* LOGIN */}
-      <div className=" login px-56 flex flex-col justify-center">
-        <h1 className=" text-center text-4xl font-bold ">
-          {isSignUp ? "Registeration" : "Login Form"}
+      <div className="login px-56 flex flex-col justify-center">
+        <h1 className="text-center text-4xl font-bold">
+          {isSignUp ? "Registration" : "Login Form"}
         </h1>
-        <span className="flex gap-3 py-6 items-center justify-center ">
-          <Link
-            href=""
-            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
-          >
-            <Mails size={18} />
-          </Link>
-          <Link
-            href=""
-            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
-          >
-            <Instagram size={18} />
-          </Link>
-          <Link
-            href=""
-            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
-          >
-            <Twitter size={18} />
-          </Link>
-          <Link
-            href=""
-            className=" bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1 "
-          >
-            <Youtube size={18} />
-          </Link>
+
+        <span className="flex gap-3 py-6 items-center justify-center">
+          {[Mails, Instagram, Twitter, Youtube].map((Icon, idx) => (
+            <Link
+              key={idx}
+              href=""
+              className="bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1"
+            >
+              <Icon size={18} />
+            </Link>
+          ))}
         </span>
+
         <p className="text-sm text-gray-500 pb-3">
           Welcome, we are happy to have you
-          {isSignUp ? <span> here.</span> : <span>back.</span>}
+          {isSignUp ? <span> here.</span> : <span> back.</span>}
         </p>
+
         {/* inputs */}
-        <div className=" flex flex-col gap-3 ">
+        <div className="flex flex-col gap-3">
           {/* Email */}
-          <div className="relative w-[310] max-w-full ">
+          <div className="relative w-[310] max-w-full">
             <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
               <MailOpen className="text-gray-600 mr-2" />
               <input
@@ -110,8 +107,9 @@ export default function Home() {
               />
             </div>
           </div>
+
           {/* Username */}
-          <div className="relative w-[310] max-w-full ">
+          <div className="relative w-[310] max-w-full">
             <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
               <User className="text-gray-600 mr-2" />
               <input
@@ -122,8 +120,9 @@ export default function Home() {
               />
             </div>
           </div>
+
           {/* password */}
-          <div className="relative w-[310] max-w-full ">
+          <div className="relative w-[310] max-w-full">
             <div className="flex items-center bg-gray-300 rounded-md px-2 py-2">
               <LockKeyhole className="text-gray-600 mr-2" />
               <input
@@ -135,36 +134,57 @@ export default function Home() {
             </div>
           </div>
         </div>
+
         {!isSignUp && (
-          <Link href="" className="text-sm text-right  ">
+          <Link href="" className="text-sm text-right">
             Forgot password
           </Link>
         )}
 
-        <span className=" underline text-sm text-center py-4  ">
-          {isSignUp ? <span className="pt-4" >Already have an account?</span> : <span>Do not have an account?</span>}
-         
-          <Link href="" className="text-base text-blue-600">
-             {isSignUp ? <span>Log in</span> : <span>Sign in</span>}
+        <span className="underline text-sm text-center py-4">
+          {isSignUp ? (
+            <span className="pt-4">Already have an account?</span>
+          ) : (
+            <span>Do not have an account?</span>
+          )}
+          <Link href="" className="text-base text-blue-600 ml-2">
+            {isSignUp ? <span>Log in</span> : <span>Sign in</span>}
           </Link>
         </span>
-        <Link href={""} className=" regBtn bg-[#40E0D0] text-center py-2 rounded-md ">
-        {isSignUp ? <span>SIGN IN</span> : <span>LOG IN</span>}
+
+        <Link
+          href=""
+          onClick={(e) => {
+            e.preventDefault();
+            handleFlip();
+          }}
+          className="regBtn bg-[#40E0D0] text-center py-2 rounded-md"
+        >
+          {isSignUp ? <span>SIGN IN</span> : <span>LOG IN</span>}
         </Link>
       </div>
 
-      {/* SIGN IN */}
-      <div className=" register bg-[#40E0D0] text-black flex-1 flex flex-col rounded-bl-[60%] rounded-tl-[60%] items-center justify-center ">
-        <h1 className=" header text-3xl font-extrabold">Come join us!</h1>
-        <p className=" registerP w-1/2 py-4 ">
-          We are so excited to have you here. If you haven't already, create an
-          account to get access to excusive deals and offers.
+      {/* SIGN IN/REGISTER */}
+      <div
+        className={`register bg-[#40E0D0] text-black flex-1 flex ${
+          isSignUp ? "flex-col-reverse" : "flex-col"
+        }  rounded-bl-[60%] rounded-tl-[60%] items-center justify-center`}
+      >
+        <h1 className="header text-3xl font-extrabold">
+          {isSignUp ? "Welcome back!" : "Come join us!"}
+        </h1>
+
+        <p className="registerP w-1/2 py-4">
+          {isSignUp
+            ? "Log in to continue exploring amazing features and offers tailored just for you."
+            : "We are so excited to have you here. If you haven't already, create an account to get access to exclusive deals and offers."}
         </p>
+
         <Link
-          href={""}
-          className=" button bg-[#F2F2F2] w-40 text-center py-2 rounded-md "
+          href=""
+          className="button bg-[#F2F2F2] w-40 text-center py-2 rounded-md"
         >
-          Sign Up
+          {isSignUp ? <span>LOG IN</span> : <span>SIGN IN</span>}
         </Link>
       </div>
     </main>
