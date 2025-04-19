@@ -19,7 +19,7 @@ export default function Home() {
  
 
   const handleFlip = () => {
-    // Hide current content
+   
     gsap.to(
       [".register .header", ".register .registerP", ".register .button"],
       {
@@ -67,6 +67,8 @@ export default function Home() {
       backgroundColor: bgColor,
       delay: 0.3,
     });
+
+    
   };
 
   return (
@@ -82,9 +84,9 @@ export default function Home() {
             <Link
               key={idx}
               href=""
-              className="bg-[#F0F0F0] border-[2px] border-gray-400 rounded-md p-1"
+              className="bg-[#F0F0F0] border-[2px] hover:border-[2px] hover:border-to-r from-[#40E0D0] to-[#008080] border-gray-400 rounded-md p-1"
             >
-              <Icon size={18} />
+              <Icon size={18} className=" hover:animate-bounce hover:size-6 ease-out hover:text-[#008080] " />
             </Link>
           ))}
         </span>
