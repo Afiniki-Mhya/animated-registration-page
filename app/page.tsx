@@ -11,11 +11,12 @@ import {
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
+
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const router = useRouter();
+ 
 
   const handleFlip = () => {
     // Hide current content
@@ -69,7 +70,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-[#F2F2F2] min-h-screen text-center text-black flex">
+    <main className="bg-[#F2F2F2] min-h-screen text-center text-black flex  ">
       {/* LOGIN */}
       <div className="login px-56 flex flex-col justify-center">
         <h1 className="text-center text-4xl font-bold">
