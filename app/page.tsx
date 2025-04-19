@@ -181,12 +181,24 @@ export default function Home() {
             : "We are so excited to have you here. If you haven't already, create an account to get access to exclusive deals and offers."}
         </p>
 
+
         <Link
+          href=""
+          onClick={(e) => {
+            e.preventDefault();
+            handleFlip();
+          }}
+          className="button  bg-[#F2F2F2] w-40 text-center py-2 rounded-md"
+        >
+          {isSignUp ? <span>LOG IN</span> : <span>SIGN IN</span>}
+        </Link>
+
+        {/* <Link
           href=""
           className="button bg-[#F2F2F2] w-40 text-center py-2 rounded-md"
         >
           {isSignUp ? <span>LOG IN</span> : <span>SIGN IN</span>}
-        </Link>
+        </Link> */}
       </div>
     </main>
   );
